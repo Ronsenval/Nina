@@ -1,43 +1,33 @@
 "use strict";
 
-
-let numberOFfilms;
-do {
- numberOFfilms = prompt("Сколько фильмов вы уже посмотрели в этом месяце?", "");
-}
+let numberOfFilms;
+    function start () {
+ numberOfFilms = prompt("Сколько фильмов вы уже посмотрели в этом месяце?", "");
 
 while (
-    numberOFfilms === null || //нельзя оставлять пустым 
-    numberOFfilms.trim() === "" || //нельзя вводить только пробелы
-    !Number.isInteger(+numberOFfilms) || //нельзя вводить не целое число
-    +numberOFfilms <0 || //нельзя вводить отрицательное число
-    +numberOFfilms > 100 //нельзя вводить слишком большое число
-);
-numberOFfilms = +numberOFfilms;
-const message = document.getElementById("message"); // вызывает элемент h2 из HTML
-
- if ( numberOFfilms < 10) {
-    message.textContent = "Просмотрено довольно мало фильмов";
-    } else if (numberOFfilms >= 10 && numberOFfilms < 30) {
-    message.textContent = "Вы обычный зритель";
-    } else if (numberOFfilms >= 30) {
-    message.textContent = "Вы активный зритель";
-    } else {
-    message.textContent = "Произошла ошибка";
-    }
+    numberOfFilms === null || //нельзя оставлять пустым 
+    numberOfFilms.trim() === "" || //нельзя вводить только пробелы
+    Number.isNaN(Number(numberOfFilms)) ||//нельзя вводить не число
+    +numberOfFilms <0 || //нельзя вводить отрицательное число
+    +numberOfFilms > 100 //нельзя вводить слишком большое число
+)
+ {
+numberOfFilms = prompt("Сколько фильмов вы уже посмотрели в этом месяце?", "");
+  }
+}
+start();
 
 const personalMovieDB = {
-  count: numberOFfilms,
+  count: numberOfFilms,
   movies: {},
   actors: {},
   genres: [],
-  privat: false
+  privat: true
 }; 
 
-for (let i = 0; i < 2; i++)
-  
-  
-  {
+    function rememberMyFilms() {
+      for (let i = 0; i < 2; i++)
+    {
     const a = prompt("Один из последних просмотренных фильмов?", "");
     const b = prompt("На сколько вы его оцените (только целое число от 1 до 10)?", "");
 
@@ -57,27 +47,50 @@ for (let i = 0; i < 2; i++)
     } else {
         console.log("error");
         i--;
-      }
+    }
   }
+}
+// rememberMyFilms();
+
+const message = document.getElementById("message"); // вызывает элемент h2 из HTML
+
+function  detectPersonalLevel() {
+ if (personalMovieDB.count < 10) {
+    message.textContent = "Просмотрено довольно мало фильмов";
+    } else if (personalMovieDB.count >= 10 && personalMovieDB.count < 30) {
+    message.textContent = "Вы обычный зритель";
+    } else if (personalMovieDB.count >= 30) {
+    message.textContent = "Вы активный зритель";
+    } else {
+    message.textContent = "Произошла ошибка";
+    }
+  }
+// detectPersonalLevel();
   
+function showMyDB (hidden) {
+ if (!hidden) {
+    console.log(personalMovieDB);
+  }
+}
+showMyDB(personalMovieDB.privat);
 
-// Альтернативный вариант с do while:
-// let a;
-// do {
-//  a = prompt("Один из последних просмотренных фильмов?", "");
-//  } while (
-//     a === null ||
-//     a.trim() === "" ||
-//     a.length > 50 //нельзя больше 50 символов
-//   );
-// let b;
-// do {
-//  b = prompt("На сколько вы его оцнениете (только целое число от 1 до 10)?", "");
-// } while (
-//   !Number.isInteger(+b) || 
-//   +b < 1 || 
-//   +b > 10);
-//personalMovieDB.movies[a] = +b;}
+function writeYourGenres() {
+  for (let i = 1; i <= 3; i++) {
+    let genre;
+    do {
+      genre = prompt(`Ваш любимый жанр под номером ${i}?`, "");
+      if (genre === null) genre = "";      // нельзя отказаться
+      genre = genre.trim();                // убираем пробелы по краям
+    } while (
+      genre === "" ||                       // пустая строка
+      genre === "0" ||                      // ноль запрещён
+      !/^(?=.*[A-Za-zА-Яа-яЁё])[A-Za-zА-Яа-яЁё0-9 ]+$/.test(genre)// не только цифры
+);                    
+    
+    personalMovieDB.genres[i - 1] = genre;
+  }
+}
 
+writeYourGenres();
 
 console.log(personalMovieDB);
