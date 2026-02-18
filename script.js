@@ -28,14 +28,14 @@ const personalMovieDB = {
     function rememberMyFilms() {
       for (let i = 0; i < 2; i++)
     {
-    const a = prompt("Один из последних просмотренных фильмов?", "");
-    const b = prompt("На сколько вы его оцените (только целое число от 1 до 10)?", "");
+    const a = prompt("Один из последних просмотренных фильмов?", "").trim(),
+          b = prompt("На сколько вы его оцените (только целое число от 1 до 10)?", "").trim();
 
     if (
         a !== null && //нельзя оставлять пустым (кнопка отмена)
         b !== null && 
-        a.trim() !== "" && //нельзя вводить только пробелы
-        b.trim() !== "" &&
+        a !== "" && //нельзя оставлять пустым
+        b !== "" &&
         a.length < 50 && //нельзя больше 50 символов в название 
         +b >= 1 && //оценка от 1 до 10
         +b <= 10 &&
@@ -50,7 +50,7 @@ const personalMovieDB = {
     }
   }
 }
-// rememberMyFilms();
+rememberMyFilms();
 
 const message = document.getElementById("message"); // вызывает элемент h2 из HTML
 
